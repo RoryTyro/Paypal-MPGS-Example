@@ -1,53 +1,21 @@
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
-</head>
-
-<body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=sb"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
-  </script>
-  <script>
-
-$.post( "http://127.0.0.1:3000/create-paypal-transaction", function() {
-  alert( "success" );
-})
-  .done(function() {
-    alert( "second success" );
-    document.location.href = 'http://127.0.0.1:3000/redirect-paypal-transaction'
-  })
-  .fail(function() {
-    alert( "error" );
-  })
-  .always(function() {
-    alert( "finished" );
-  });
-
-
-  
-
-
- /*
- fetch('/create-paypal-transaction', {
-      method: 'post',
-      redirect: 'follow',
-      mode: 'cors',
-      headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-    .then(response => {
-        // HTTP 301 response
-        if (response.redirected) {
-            window.location.href = response;
-        }
-    })
-    .catch(function(err) {
-        //console.info(err + " url: " + url);
-    });
-*/
-
-  </script>
-</body>
+<html>
+<div class="container">
+    <header>
+        <title>Ecommerce Demo</title>
+        <link rel="stylesheet" href="ecomm_demo.css">
+    </header>
+    <body>
+        <img src="tyro-logo.png" class="tyro-logo"> 
+        <!-- <hr>  -->
+        <h1>ecomm demo</h1>
+        <ul>
+            <li><a href="https://rorytyro.github.io/hosted-session-cardtype-validation/autocomplete.html">Card Payment</a></li>
+            <li><a href="#">Tokenisation</a></li>
+            <li><a href="/paypal-demo.html">Paypal</a></li>
+            <li><a href="#">3DS</a></li>
+            <li><a href="#">Apple Pay</a></li>
+            <li><a href="#">Google Pay</a></li>
+        </ul>
+    </body>
+</div>
+</html>

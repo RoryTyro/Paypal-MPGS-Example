@@ -1,0 +1,163 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Paypal Checkout.JS example</title>
+  </head>
+  <body>
+    Paypal Checkout.JS example
+<div id="paypal-button"></div>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+
+
+<script>
+    
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'AZSX70wHD-F0dUtVBgLmuHMaWR_89RApMrYsz6lBTa4TcG5cGYVo0RFQ4s9jDrnyMbnARDkZRfHSDVjx',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_AU',
+    style: {
+      size: 'small',
+      color: 'silver',
+      shape: 'rect',
+      tagline: 'false',
+      label: 'paypal'
+    },
+    
+    platform: 'mobile',
+
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+
+    // Set up a payment
+    payment: function(){
+        getRedirectURL()
+        .then(launchPaypal);
+    },
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function() {
+        // Show a confirmation message to the buyer
+        window.alert('Thank you for your purchase!');
+      });
+    }
+  }, '#paypal-button');
+
+function launchPaypal(redirectURL){
+    paypal.checkout.startFlow(redirectURL);
+}
+
+function getRedirectURL(){
+
+  var CREATE_PAYMENT_URL = '/create-exp-paypal-transaction';
+
+    return fetch(CREATE_PAYMENT_URL, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function(res) {
+      console.log(res);
+      return res.json();
+    }).then(function(data) {
+      console.log('orderID: ' + data.orderID)
+      return data.redirectURL;
+    });
+
+}
+
+  /*
+   var PAYMENT_TYPE = {
+        EC_TOKEN: "ec_token",
+        BA_TOKEN: "ba_token",
+        PAY_ID: "pay_id"
+    };
+    var PPTM_ID = "xo-pptm";
+    var ATTRIBUTE = {
+        BUTTON: "data-button",
+        FUNDING_SOURCE: "data-funding-source",
+        CARD: "data-card",
+        VERSION: "data-version",
+        LAYOUT: "data-layout",
+        SIZE: "data-size",
+        SMART_BUTTON_VERSION: "data-paypal-smart-button-version"
+    };
+    var PLATFORM = {
+        DESKTOP: "desktop",
+        MOBILE: "mobile"
+  */
+</script>
+
+<div id="paypal-button"></div>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+    
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'YOUR_SANDBOX_CLIENT_ID',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_AU',
+    style: {
+      size: 'small',
+      color: 'silver',
+      shape: 'rect',
+      tagline: 'false',
+      label: 'paypal'
+    },
+    
+    platform: 'mobile',
+
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+
+    // Set up a payment
+    payment: function(){
+      
+  	var CREATE_PAYMENT_URL = '/create-exp-paypal-transaction';
+      
+    return fetch(CREATE_PAYMENT_URL, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function(res) {
+      console.log(res);
+      return res.json();
+    }).then(function(data) {
+      console.log('redirectURL: ' + data.redirectURL)
+      return paypal.checkout.startFlow(data.redirectURL);
+    });
+
+    },
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function() {
+        // Show a confirmation message to the buyer
+        window.alert('Thank you for your purchase!');
+      });
+    }
+  }, '#paypal-button');
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+</head>
+
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=sb"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+  </script>
+
+
+<div id="paypal-button-container"></div>
+
+<!-- Include the PayPal JavaScript SDK -->
+
+<script src="https://www.paypal.com/sdk/js?client-id=AZSX70wHD-F0dUtVBgLmuHMaWR_89RApMrYsz6lBTa4TcG5cGYVo0RFQ4s9jDrnyMbnARDkZRfHSDVjx&currency=AUD" data-partner-attribution-id="FLAVORsb-aosdh5284092_MP"></script>
+
+<script>
+//Above make sure to add:
+//PayPal Client ID: ?-id=[Your-client-ID]
+//&currency=AUD
+//AZSX70wHD-F0dUtVBgLmuHMaWR_89RApMrYsz6lBTa4TcG5cGYVo0RFQ4s9jDrnyMbnARDkZRfHSDVjx
+//&intent=order&commit=false&vault=false
+
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons(
+ 
+    {
+      createOrder: function() {
+        //callback fires after paypal button clicked
+      console.log("paypal button clicked");
+
+      //send request to merchant server to create PayPal transaction
+    var CREATE_PAYMENT_URL = '/create-sb-paypal-transaction';
+
+    return fetch(CREATE_PAYMENT_URL, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function(res) {
+      console.log(res);
+      return res.json();
+    }).then(function(data) {
+      console.log('orderID: ' + data.orderID)
+      return data.orderID;
+    });
+  },
+
+  onApprove: function(data, actions) {
+ //callback fires after paypal transaction complete
+    console.log("PayPal button Complete");
+       //send request to merchant server to create PayPal transaction
+    var RETRIEVE_URL = '/retrieve-sb-transaction-result';
+
+    return fetch(RETRIEVE_URL, {
+      method: 'get'
+    }).then(function(res) {
+    return res.json();
+  }).then(function(details) {
+    alert('Transaction approved by ' + details.payer_given_name);
+});
+  }
+}).render('#paypal-button-container');
+
+
+
+ /*
+    return actions.order.capture().then(function(details) {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+          });
+
+
+    actions.order.capture()
+    //callback fires after paypal transaction complete
+    console.log("PayPal button Complete");
+       //send request to merchant server to create PayPal transaction
+    var RETRIEVE_URL = '/retrieve-transaction-result';
+
+    return fetch(RETRIEVE_URL, {
+      method: 'get'
+    }).then(function(res) {
+    return res.json();
+  }).then(function(details) {
+    alert('Transaction approved by ' + details.payer_given_name);
+ */
+</script>
+
+</body>
